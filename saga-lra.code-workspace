@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "order-ms"
+		},
+		{
+			"path": "reefer-ms"
+		},
+		{
+			"path": "lra-coordinator"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "automatic"
+	}
+}
