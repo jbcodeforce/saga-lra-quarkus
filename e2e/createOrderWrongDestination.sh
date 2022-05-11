@@ -1,0 +1,2 @@
+curl -X POST http://localhost:8080/api/v1/orders -H 'accept: application/json' -H 'Content-Type: application/json' \
+  -d '{ "customerID": "C01", "productID": "P01", "quantity": 90,  "pickupCity": "San Francisco", "destinationAddress": { "street": "1st main street", "city": "NoDestination", "country": "China", "state": "N1", "zipcode": "30000" }}'

@@ -14,6 +14,9 @@ public class OrderDTO {
 	public String customerID;
 	public String productID;
 	public int quantity;
+	public String pickupCity;
+	public String containerIDs;
+	public String voyageID;
 	public Address destinationAddress;
 	public String creationDate;
 	
@@ -22,11 +25,12 @@ public class OrderDTO {
 		// needed for jaxrs serialization
 	}
 	 
-	public OrderDTO(String customerID, String productID, int quantity, Address destinationAddress) {
+	public OrderDTO(String customerID, String productID, int quantity, String pickupCity, Address destinationAddress) {
 		super();
 		this.customerID = customerID;
 		this.productID = productID;
 		this.quantity = quantity;
+		this.pickupCity = pickupCity;
 		this.destinationAddress = destinationAddress;
 	}
 	
@@ -37,6 +41,9 @@ public class OrderDTO {
 		dto.productID = order.productID;
 		dto.destinationAddress = order.deliveryAddress;
 		dto.quantity = order.quantity;
+		dto.pickupCity = order.pickupCity;
+		dto.containerIDs = order.containerIDs;
+		dto.voyageID = order.voyageID;
 		dto.creationDate = order.creationDate;
 		return dto;
 	}
@@ -48,6 +55,7 @@ public class OrderDTO {
 								orderDTO.getProductID(),
 								orderDTO.getCustomerID(),
 								orderDTO.getQuantity(),
+								orderDTO.getPickupCity(),
 								orderDTO.getDestinationAddress(),
 								orderDTO.creationDate,
 								OrderEntity.PENDING_STATUS);
@@ -57,6 +65,7 @@ public class OrderDTO {
 								orderDTO.getProductID(),
 								orderDTO.getCustomerID(),
 								orderDTO.getQuantity(),
+								orderDTO.getPickupCity(),
 								orderDTO.getDestinationAddress(),
 								orderDTO.creationDate,
 								OrderEntity.PENDING_STATUS);
@@ -95,5 +104,13 @@ public class OrderDTO {
 
 	public String getCreationDate(){
 		return creationDate;
+	}
+
+	public String getPickupCity() {
+		return pickupCity;
+	}
+
+	public void setPickupCity(String pickupCity) {
+		this.pickupCity = pickupCity;
 	}
 }

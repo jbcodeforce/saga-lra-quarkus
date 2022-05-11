@@ -23,6 +23,9 @@ public class OrderEntity {
     public String customerID;
     public Integer quantity;
     public Address deliveryAddress;
+	public String pickupCity;
+	public String containerIDs;
+	public String voyageID;
     public String status;
 	public String creationDate;
 	public String updateDate;
@@ -34,6 +37,7 @@ public class OrderEntity {
 			String productID, 
 			String customerID, 
 			int quantity, 
+			String pickupCity,
 			Address deliveryAddress,
 			String creation,
 			String status) {
@@ -42,6 +46,7 @@ public class OrderEntity {
 		this.productID = productID;
 		this.customerID = customerID;
 		this.quantity = quantity;
+		this.pickupCity = pickupCity;
 		this.deliveryAddress = deliveryAddress;
 		this.status = status;
 		this.creationDate = creation;

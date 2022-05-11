@@ -1,4 +1,4 @@
-package org.acme.freezerms.infra.api.dto;
+package org.acme.voyagems.infra.api.dto;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
@@ -29,7 +29,7 @@ public class OrderDTO {
 	}
 	
 	public String toString(){
-		return "OrderDTO: { orderid: " + this.orderID + ", origin city: " + this.pickupCity + ", target city: " + this.destinationCity + ", product: " + this.productID + ", reefer: " + this.containerIDs + "}";
+		return "OrderDTO: { orderid: " + this.orderID + ", origin city: " + this.pickupCity + ", target city: " + this.destinationCity + ", product: " + this.productID + "}";
 	}
 
 	public String getProductID() {

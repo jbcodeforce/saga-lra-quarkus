@@ -1,7 +1,7 @@
 #!/bin/bash
 scriptDir=$(dirname $0)
 
-IMAGE_NAME=quay.io/jbcodeforce/saga-lra-reefer-ms
+IMAGE_NAME=quay.io/jbcodeforce/saga-lra-voyage-ms
 
 if [[ $# -eq 1 ]]
 then

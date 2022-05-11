@@ -1,6 +1,5 @@
 package org.acme.freezerms.domain;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -17,6 +16,10 @@ public class FreezerService {
     @Inject
     public FreezerRepository repository;
 
+    public FreezerService(FreezerRepository repo) {
+        this.repository = repo;
+    }
+
     public Freezer getReeferById(String id) {
         return repository.getById(id);
     }
@@ -32,12 +35,35 @@ public class FreezerService {
     }
 
 
-    public void computeBestFreezerToShip(URI lraId, OrderDTO order) {
-        logger.info("compute best freezer");
+    public OrderDTO computeBestFreezerToShip(String transactionID, OrderDTO order) {
+        logger.info("compute best freezer " + transactionID);
+        List<Freezer> freezers = repository.assignFreezerForALocation(transactionID,order.pickupCity,order.quantity);
+        order.containerIDs = "";
+        for (Freezer f : freezers) {
+            order.containerIDs = order.containerIDs + f.reeferID + ",";
+        }
+        if (order.containerIDs.length() > 0) {
+            order.containerIDs=order.containerIDs.substring(0, order.containerIDs.lastIndexOf(","));
+        }
+        logger.info("--> " + order.toString());
+        return order;
     }
 
 
-    public void compensateFreezerOrder(String lraId, OrderDTO order) {
-        logger.info("compensate freezer allocation");
+    public OrderDTO compensateFreezerOrder(String transactionID, OrderDTO order) {
+        logger.info("compensate freezer allocation " + transactionID);
+        order.containerIDs = "";
+        List<Freezer> freezers = repository.getFreezersForTransaction(transactionID);
+        for (Freezer f : freezers) {
+            f.status = Freezer.FREE;
+            f.currentFreeCapacity = f.capacity;
+            repository.updateFreezer(f);
+        }
+        logger.info("--> " + order.toString());
+        return order;
+    }
+
+    public Freezer updateFreezer(Freezer newFreezer) {
+        return repository.updateFreezer(newFreezer);
     }
 }

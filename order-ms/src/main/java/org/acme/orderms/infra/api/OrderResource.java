@@ -62,8 +62,15 @@ public class OrderResource {
         return OrderDTO.fromEntity(order);
     }
 
+    /**
+     * Require an existing LRA or start a new one. Do not end it at the end of this function
+     * as the saga starts on this method 
+     * @param lraId
+     * @param order
+     * @return
+     */
     @POST
-    @LRA(value = LRA.Type.REQUIRED, end=false)
+    @LRA(value = LRA.Type.REQUIRES_NEW, end=false)
     @Counted(name = "performedNewOrderCreation", description = "How many post new order have been performed.")
     @Timed(name = "checksTimer", description = "A measure of how long it takes to perform the operation.", unit = MetricUnits.MILLISECONDS)
     public OrderDTO saveNewOrder(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) URI lraId, OrderDTO order) {
@@ -74,7 +81,7 @@ public class OrderResource {
     }
 
     @PUT
-    @LRA(value = LRA.Type.REQUIRED, end=false)
+    @LRA(value = LRA.Type.REQUIRES_NEW, end=false)
     public OrderDTO updateExistingOrder(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) URI lraId, OrderDTO order) {
         logger.info("PUT operation " + order.toString());
         OrderEntity entity = OrderDTO.toEntity(order);
@@ -85,8 +92,11 @@ public class OrderResource {
     @PUT
     @Path("compensate")
     @Compensate
-    public Response compensateWork(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) URI lraId) {
-        System.out.printf("compensating %s%n", lraId);
+    public Response compensateWork(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) URI lraId,OrderDTO order) {
+        logger.info("compensating "+ lraId);
+        OrderEntity entity = OrderDTO.toEntity(order);
+        entity.status = OrderEntity.ONHOLD_STATUS;
+        service.updateOrder(entity);
         return Response.ok(lraId.toASCIIString()).build();
     }
 
@@ -94,8 +104,11 @@ public class OrderResource {
     @PUT
     @Path("complete")
     @Complete
-    public Response completeWork(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) URI lraId) {
-        System.out.printf("completing %s%n", lraId);
+    public Response completeWork(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) URI lraId,OrderDTO order) {
+        logger.info("completing " + lraId);
+        OrderEntity entity = OrderDTO.toEntity(order);
+        entity.status = OrderEntity.COMPLETED_STATUS;
+        service.updateOrder(entity);
         return Response.ok(lraId.toASCIIString()).build();
     }
 }

@@ -1,0 +1,101 @@
+[
+    {
+        "voyageID": "V01",
+        "lane_id": "1",
+        "from_loc": "San Francisco",
+        "to_loc": "Tokyo",
+        "transit_time": 196,
+        "reefer_cost": 10,
+        "fixed_cost": 20
+    },
+    {
+        "voyageID": "V02",
+        "lane_id": "2",
+        "from_loc": "New York",
+        "to_loc": "London",
+        "transit_time": 180,
+        "reefer_cost": 12,
+        "fixed_cost": 20
+    },
+    {
+        "voyageID": "V03",
+        "lane_id": "3",
+        "from_loc": "Beerse, Belgium",
+        "to_loc": "London, England",
+        "transit_time": 2,
+        "reefer_cost": 11,
+        "fixed_cost": 20
+    },
+    {
+        "voyageID": "V04",
+        "lane_id": "4",
+        "from_loc": "Titusville, N.J.",
+        "to_loc": "Paris, France",
+        "transit_time": 2,
+        "reefer_cost": 13,
+        "fixed_cost": 20
+    },
+    {
+        "voyageID": "V05",
+        "lane_id": "5",
+        "from_loc": "Paris, France",
+        "to_loc": "Beerse, Belgium",
+        "transit_time": 1,
+        "reefer_cost": 6,
+        "fixed_cost": 10
+    },
+    {
+        "voyageID": "V06",
+        "lane_id": "6",
+        "from_loc": "London, England",
+        "to_loc": "Titusville, N.J.",
+        "transit_time": 2,
+        "reefer_cost": 6,
+        "fixed_cost": 10
+    },
+    {
+        "voyageID": "V07",
+        "lane_id": "7",
+        "from_loc": "Paris, France",
+        "to_loc": "Beerse, Belgium",
+        "transit_time": 1,
+        "reefer_cost": 5,
+        "fixed_cost": 10
+    },
+    {
+        "voyageID": "V08",
+        "lane_id": "8",
+        "from_loc": "London, England",
+        "to_loc": "Titusville, N.J.",
+        "transit_time": 2,
+        "reefer_cost": 6,
+        "fixed_cost": 10
+    },
+    {
+        "voyageID": "V09",
+        "lane_id": "9",
+        "from_loc": "Beerse, Belgium",
+        "to_loc": "Titusville, N.J.",
+        "transit_time": 1,
+        "reefer_cost": 5,
+        "fixed_cost": 10
+    },
+    {
+        "voyageID": "V10",
+        "lane_id": "10",
+        "from_loc": "Titusville, N.J.",
+        "to_loc": "Beerse, Belgium",
+        "transit_time": 1,
+        "reefer_cost": 5,
+        "fixed_cost": 10
+    },
+    {
+        "voyageID": "V11",
+        "lane_id": "11",
+        "from_loc": "Paris, France",
+        "to_loc": "Paris, France",
+        "transit_time": 1,
+        "reefer_cost": 2,
+        "fixed_cost": 0
+    }
+]

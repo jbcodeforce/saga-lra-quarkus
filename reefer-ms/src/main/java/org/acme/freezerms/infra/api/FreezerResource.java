@@ -52,23 +52,39 @@ public class FreezerResource {
         return service.saveReefer(newFreezer);
     }
 
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Freezer updateFreezer( Freezer newFreezer) {
+        logger.info("Update freezer " + newFreezer.toString());
+        return service.updateFreezer(newFreezer);
+    }
+
+    /**
+     * Method to support the order management saga. Allocate a refrigerator container from the 
+     * order destination and pickup up area.
+     * @param lraId
+     * @param order
+     * @return
+     */
     @LRA(value = LRA.Type.REQUIRED, end=false)
     @POST
     @Path("/assignOrder")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response processOrder(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) URI lraId, OrderDTO order) {
+        logger.info("processOrder new freezer " + order.toString());
+        logger.info("processOrder LRA " + lraId.toString());
         if (order.destinationCity.equals("ABadDestination")) {
             return Response.serverError().build();
         }
-        service.computeBestFreezerToShip(lraId,order);
-        return Response.ok().build();
+        OrderDTO updatedOrder = service.computeBestFreezerToShip(lraId.toString(),order);
+        return Response.ok().entity(updatedOrder).build();
     }
 
     @Compensate
     @Path("/compensateOrder")
     @PUT
-    public Response compensateOrder(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) String lraId, OrderDTO order) {
-        service.compensateFreezerOrder(lraId,order);
+    public Response compensateOrder(@HeaderParam(LRA_HTTP_CONTEXT_HEADER) URI lraId, OrderDTO order) {
+        service.compensateFreezerOrder(lraId.toString(),order);
         return Response.ok(ParticipantStatus.Compensated.name()).build();
     }
 }

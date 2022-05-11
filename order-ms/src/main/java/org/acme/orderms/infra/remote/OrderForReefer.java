@@ -10,7 +10,11 @@ public class OrderForReefer {
 	public String productID;
 	public int quantity;
 	public String destinationCity;
+    public String pickupCity;
+	public String containerIDs;
+    public String voyageID;
 	public String creationDate;
+
 
     public OrderForReefer() {
     }
@@ -20,9 +24,15 @@ public class OrderForReefer {
         ofr.orderID = oe.orderID;
         ofr.productID = oe.productID;
         ofr.quantity= oe.quantity;
+        ofr.pickupCity = oe.pickupCity;
+        ofr.containerIDs = oe.containerIDs;
         ofr.destinationCity = oe.getDeliveryAddress().getCity();
         ofr.creationDate = oe.creationDate;
         return ofr;
     }
+
+    public String toString(){
+		return "OrderDTO: { orderid: " + this.orderID + ", origin city: " + this.pickupCity + ", target city: " + this.destinationCity + ", containers: " + this.containerIDs + "}";
+	}
     
 }

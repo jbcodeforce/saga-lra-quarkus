@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "lra-coordinator"
+		},
+		{
+			"path": "voyage-ms"
 		}
 	],
 	"settings": {

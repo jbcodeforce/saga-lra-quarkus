@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import org.acme.orderms.infra.remote.OrderForReefer;
 import org.acme.orderms.infra.remote.ReeferLRAHeaderFactory;
 import org.acme.orderms.infra.remote.ReeferService;
+import org.acme.orderms.infra.remote.VoyageService;
 import org.acme.orderms.infra.repo.OrderRepository;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.reactive.messaging.Channel;
@@ -39,12 +40,16 @@ public class OrderService {
 	@RestClient
 	public ReeferService reeferService;
 	@Inject
+	@RestClient
+	public VoyageService voyageService;
+	@Inject
 	public ReeferLRAHeaderFactory lraHeaderFactory;
 	
     @Channel("orders")
 	public Emitter<OrderEvent> eventProducer;
 	
-	public OrderService(){}
+	public OrderService(){
+	}
 	
 	public OrderEntity createOrder(OrderEntity order) {
 		if (order.orderID == null) {
@@ -54,12 +59,34 @@ public class OrderService {
 			order.creationDate = LocalDate.now().toString();
 		}
 		order.updateDate= order.creationDate;
-		repository.addOrder(order);
+		try {
+			repository.addOrder(order);
+			assignReeferContainer(order);
+			assignVoyage(order);
 
-		OrderForReefer ofr = OrderForReefer.fromOrder(order);
-		lraHeaderFactory.lraID = order.lraID;
-		reeferService.callAssignOrder(ofr);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		return order;
+	}
+
+	private void assignReeferContainer(OrderEntity order) throws Exception {
+		lraHeaderFactory.getLRAasString(); // ugly because of CDI injection
+			OrderForReefer ofr = OrderForReefer.fromOrder(order);
+			lraHeaderFactory.setLRA(order.lraID);
+			OrderForReefer oftOut =  reeferService.callAssignOrder(ofr);
+			order.containerIDs = oftOut.containerIDs;
+			logger.info(oftOut.toString());
+			repository.updateOrder(order);
+	}
+
+	private void assignVoyage(OrderEntity order) throws Exception {
+		OrderForReefer ofr = OrderForReefer.fromOrder(order);
+		lraHeaderFactory.setLRA(order.lraID);
+		OrderForReefer oftOut = voyageService.callAssignOrder(ofr);
+		order.voyageID = oftOut.voyageID;
+		repository.updateOrder(order);
 	}
 
 	public List<OrderEntity> getAllOrders() {
